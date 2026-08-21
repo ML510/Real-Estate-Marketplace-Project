@@ -1,3 +1,5 @@
+import RecentProperties from "@/components/home/RecentProperties";
+import SearchBox from "@/components/home/SearchBox";
 import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 
@@ -17,30 +19,34 @@ export default function Home() {
         {/* content */}
         <div className="relative z-10 w-full">
           <div className="mx-auto max-w-7x1 px-6 1g:px-12">
-            {/* badge */}
-            <div className=" mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 backdrop-blur-x1">
-              <div className="w-2 h-2 rounded-full bg-primary" />
+            <div className="max-w-3xl">
+              {/* badge */}
+              <div className=" mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 backdrop-blur-x1">
+                <div className="w-2 h-2 rounded-full bg-primary" />
 
-              <span className="text-sm font-medium tracking-wide
+                <span className="text-sm font-medium tracking-wide
                 text-white">
-                Premium Real Estate Marketplace
-              </span>
+                  Premium Real Estate Marketplace
+                </span>
+              </div>
+
+
+              {/* heading */}
+              <h2 className=" text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl">
+                Find The Perfect Place To Call Home
+              </h2>
+
+              <p className=" mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
+                Discover luxury apartments, modern homes, and premium
+                properties
+                in the best locations around the world.
+              </p>
+              <SearchBox />
             </div>
-
-
-            {/* heading */}
-            <h2 className=" text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl">
-              Find The Perfect Place To Call Home
-            </h2>
-
-            <p className=" mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
-              Discover luxury apartments, modern homes, and premium
-              properties
-                  in the best locations around the world.
-            </p>
           </div>
         </div>
       </section>
+      <RecentProperties/>
     </FrontendLayout >
   );
 }
