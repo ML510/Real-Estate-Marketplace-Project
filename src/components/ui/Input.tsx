@@ -54,11 +54,30 @@ function Input({
         <div className="w-full">
             <div className="relative">
                 {as === "textarea" ? (
-                    <textarea name={name} id={inputId} placeholder="" className={sharedClasses} onChange={onChange} {...props as TextareaHTMLAttributes<HTMLTextAreaElement>}/>
-                ) : ()}
+                    <textarea name={name} id={inputId} value={value} placeholder="" className={sharedClasses} onChange={onChange} {...props as TextareaHTMLAttributes<HTMLTextAreaElement>} />
+                ) : (
+                    <input id={inputId} name={name} value={value} placeholder="" className={sharedClasses} onChange={onChange} {...props as InputHTMLAttributes<HTMLInputElement>} />
+                )}
 
+                <label htmlFor={inputId} className={clsx(
+                    `
+                    absolute
+                    left-4
+                    top-4
+                    text-gray-500
+                    text-sm
+                    transition-all
+                    duration-200
+                    pointer-events-none
+                    origin-left
+                    `,
+                    hasValue ? "scale-75 -translate-3 text-gray-700" : "peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-gray-700"
+                )}>
+                    {label}
+                </label>
             </div>
-            
+            {error && <p className="mt=1 text-xs text-red-500">{error}</p>}
+
         </div>
     )
 }

@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
+import Input from "../ui/Input";
+import Button from "../ui/Button";
+import { LuSend } from "react-icons/lu";
 
 interface InputValues {
     email: string,
@@ -44,13 +47,18 @@ function EmailForm() {
 
                 </div>
                 <div className="mt-8 space-y-4">
-
+                    <Input onChange={handleChange} id="contact-name" label="Your Name" name="name" value={values.name} />
+                    <Input onChange={handleChange} id="contact-email" label="Your Email" name="email" value={values.email} />
+                    <Input onChange={handleChange} id="contact-phone" label="Your Phone" name="phone" value={values.phone} />
+                    <Input onChange={handleChange} id="contact-message" label="Your Message" name="message" value={values.message} as="textarea" />
                 </div>
-
+                <Button fullWidth className="mt-3" icon={<LuSend />}>
+                    Send Email
+                </Button>
 
             </div>
         </div>
-    )
+    );
 }
 
 export default EmailForm
