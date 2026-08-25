@@ -30,7 +30,7 @@ function EmailForm() {
             ...prev,
             [name]: value
         }))
-    }
+    };
     return (
         <div>
             <div className=" sticky top-28 rounded-4xl border border-black/5 bg-card p-8 shadow-sm">
