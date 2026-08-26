@@ -7,6 +7,7 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { useAuthModal } from "@/store/useAuthModalStore";
+import { useCreatePropertyModalStore } from "@/store/useCreatePropertyModalStore";
 
 interface NavbarProps {
     variant?: "transparent" | "solid"
@@ -15,10 +16,9 @@ interface NavbarProps {
 export const navLinks = ["Home", "Properties", "MarketPlace"]
 
 function NavBar({ variant = "transparent" }: NavbarProps) {
-
     const [isOpen, setIsOpen] = useState(false);
-
     const {openLogin} = useAuthModal();
+    const {open:openCreateModal} = useCreatePropertyModalStore();
 
     const isTransparent = variant === "transparent"
 
@@ -52,7 +52,7 @@ function NavBar({ variant = "transparent" }: NavbarProps) {
                         <Button variant="outline" onClick={openLogin}>
                             Login
                         </Button>
-                        <Button icon={<FaHome />} variant="outline">
+                        <Button icon={<FaHome />} variant="outline" onClick={openCreateModal}>
                             Add Property
                         </Button>
                     </div>
@@ -86,7 +86,7 @@ function NavBar({ variant = "transparent" }: NavbarProps) {
                                 <Button variant="outline"onClick={openLogin}>
                                     Login
                                 </Button>
-                                <Button icon={<FaHome />} variant="outline">
+                                <Button icon={<FaHome />} variant="outline" onClick={openCreateModal}>
                                     Add Property
                                 </Button>
                             </div>
