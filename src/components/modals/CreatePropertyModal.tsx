@@ -34,8 +34,10 @@ function CreatePropertyModal() {
     const [area, setArea] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [image,setImage] = useState<null | File>(null);
-    const [preview,setPreview] = useState<null | string>(null);
+    const [image, setImage] = useState<null | File>(null);
+    const [preview, setPreview] = useState<null | string>(null);
+    const [listingType, setListingType] = useState<"rent" | "sale">("sale");
+    const [price, setPrice] = useState("");
 
     const stepTitle = () => {
         switch (step) {
@@ -57,7 +59,7 @@ function CreatePropertyModal() {
         }
     }
 
-    const handleImageChange = (file:File) => {
+    const handleImageChange = (file: File) => {
         setImage(file);
         setPreview(URL.createObjectURL(file))
     }
@@ -105,7 +107,17 @@ function CreatePropertyModal() {
                     </div>
                 )}
                 {step === STEPS.IMAGE && (
-                    <ImageUpload preview={preview} onChange={handleImageChange}/>
+                    <ImageUpload preview={preview} onChange={handleImageChange} />
+                )}
+
+                {step === STEPS.PRICING && (
+                    <div className="space-y-6">
+                        <select value={listingType} onChange={(e) => setListingType(e.target.value as "sale" | "rent")} className="h-13 w-full rounded-2xl border border-black/10 px-4">
+                            <option value="rent">For Rent</option>
+                            <option value="sale">For Sale</option>
+                        </select>
+                        <Input name="price" label={listingType === "sale" ? "Sale Price" : "Monthly Rent"} type="number" value={price} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPrice(e.target.value)} />
+                    </div>
                 )}
             </div>
 
