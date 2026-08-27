@@ -1,9 +1,9 @@
 import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 import PropertyCard from "@/components/properties/PropertyCard";
-import Button from "@/components/ui/Button";
 import { dummyProperties } from "@/constants/dummyProperties";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
+import FilterButton from './../../components/marketplace/FilterButton';
 
 function MarketPlace() {
   return (
@@ -16,9 +16,7 @@ function MarketPlace() {
             Explore
           </h2>
 
-          <Button variant="outline" icon={<HiOutlineAdjustmentsHorizontal size={20} />}>
-            Filter
-          </Button>
+          <FilterButton/>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-4">
