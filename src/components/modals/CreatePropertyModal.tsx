@@ -7,6 +7,7 @@ import Button from "../ui/Button";
 
 import PropertyTypeCard from "../properties/PropertyTypeCard";
 import { propertyTypes } from '@/constants/PropertyTypes';
+import Input from "../ui/Input";
 
 const STEPS = {
     TYPE: 0,
@@ -23,6 +24,8 @@ function CreatePropertyModal() {
     const { isOpen, close } = useCreatePropertyModalStore();
     const [loading, setLoading] = useState(false);
     const [propertyType, setPropertyType] = useState("");
+    const [location, setLocation] = useState("");
+    const [address, setAddress] = useState("");
 
     const stepTitle = () => {
         switch (step) {
@@ -59,9 +62,15 @@ function CreatePropertyModal() {
                 {step === STEPS.TYPE && (
                     <div className="grid grid-cols-2 gap-4 w-full max-h-[50vh] overflow-y-scroll no-scrollbar">
                         {propertyTypes.map((item) => (
-                            <PropertyTypeCard label={item.label} icon={item.icon} selected={propertyType === item.slug} onClick={() => 
+                            <PropertyTypeCard label={item.label} icon={item.icon} selected={propertyType === item.slug} onClick={() =>
                                 setPropertyType(item.slug)} key={item.slug} />
                         ))}
+                    </div>
+                )}
+                {step === STEPS.LOCATION && (
+                    <div className="space-y-6 w-full">
+                        <Input name="location" label="Location" value={location} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)} />
+                        <Input name="address" label="Address" value={address} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)} />
                     </div>
                 )}
             </div>
