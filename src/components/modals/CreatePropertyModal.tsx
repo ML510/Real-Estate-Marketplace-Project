@@ -8,6 +8,7 @@ import Button from "../ui/Button";
 import PropertyTypeCard from "../properties/PropertyTypeCard";
 import { propertyTypes } from '@/constants/PropertyTypes';
 import Input from "../ui/Input";
+import Counter from "../properties/Counter";
 
 const STEPS = {
     TYPE: 0,
@@ -26,6 +27,10 @@ function CreatePropertyModal() {
     const [propertyType, setPropertyType] = useState("");
     const [location, setLocation] = useState("");
     const [address, setAddress] = useState("");
+    const [bedrooms, setBedrooms] = useState(1);
+    const [bathrooms, setBathrooms] = useState(1);
+    const [parkingSpaces, setParkingSpaces] = useState(0);
+    const [area, setArea] = useState("");
 
     const stepTitle = () => {
         switch (step) {
@@ -71,6 +76,15 @@ function CreatePropertyModal() {
                     <div className="space-y-6 w-full">
                         <Input name="location" label="Location" value={location} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)} />
                         <Input name="address" label="Address" value={address} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAddress(e.target.value)} />
+                    </div>
+                )}
+                {step === STEPS.DETAILS && (
+                    <div className="space-y-4">
+                        <Counter title="Bedrooms" subTitle="How many bedrooms" value={bedrooms} onChange={setBedrooms} />
+                        <Counter title="Bathrooms" subTitle="How many bathrooms" value={bathrooms} onChange={setBathrooms} />
+                        <Counter title="Parking Spaces" subTitle="How many parking spaces" value={parkingSpaces} onChange={setParkingSpaces} />
+
+                        <Input name="area" label="Property Area (sqft)" type="number" value={area} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setArea(e.target.value)} />
                     </div>
                 )}
             </div>
