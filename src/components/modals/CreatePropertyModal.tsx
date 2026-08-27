@@ -9,6 +9,7 @@ import PropertyTypeCard from "../properties/PropertyTypeCard";
 import { propertyTypes } from '@/constants/PropertyTypes';
 import Input from "../ui/Input";
 import Counter from "../properties/Counter";
+import ImageUpload from "../properties/ImageUpload";
 
 const STEPS = {
     TYPE: 0,
@@ -33,6 +34,8 @@ function CreatePropertyModal() {
     const [area, setArea] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [image,setImage] = useState<null | File>(null);
+    const [preview,setPreview] = useState<null | string>(null);
 
     const stepTitle = () => {
         switch (step) {
@@ -52,6 +55,11 @@ function CreatePropertyModal() {
             default:
                 return
         }
+    }
+
+    const handleImageChange = (file:File) => {
+        setImage(file);
+        setPreview(URL.createObjectURL(file))
     }
 
     const createListing = async () => {
@@ -95,6 +103,9 @@ function CreatePropertyModal() {
                         <Input name="description" label="Description" value={description} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)} />
 
                     </div>
+                )}
+                {step === STEPS.IMAGE && (
+                    <ImageUpload preview={preview} onChange={handleImageChange}/>
                 )}
             </div>
 
