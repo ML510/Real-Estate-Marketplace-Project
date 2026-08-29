@@ -6,8 +6,11 @@ import { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 interface RegisterValues {
-  name:string,
+  name: string,
   email: string,
   password: string,
 }
@@ -15,9 +18,10 @@ interface RegisterValues {
 type RegisterErrors = Partial<Record<keyof RegisterValues, string>>
 
 function RegisterModal() {
-  const {openLogin,isRegisterOpen,closeRegister} = useAuthModal();
+  const router = useRouter();
+  const { openLogin, isRegisterOpen, closeRegister } = useAuthModal();
   const [values, setValues] = useState<RegisterValues>({
-    name:"",
+    name: "",
     email: "",
     password: ""
   });
@@ -65,16 +69,47 @@ function RegisterModal() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
 
+  };
+
+  const onSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    try {
+      setLoading(true);
+
+      const {error} = await authClient.signUp.email({
+        name:values.name,
+        email:values.email,
+        password:values.password
+      });
+
+      if(error){
+        toast.error(error.message as string);
+        return;
+      }
+
+      toast.success("Registration successful");
+      router.refresh();
+
+      setValues({name:"",email:"",password:""});
+      closeRegister();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <Modal title="Register"onClose={closeRegister}isOpen={isRegisterOpen}>
-        <div className="md-6 space-y-1">
+    <Modal title="Register" onClose={closeRegister} isOpen={isRegisterOpen}>
+      <div className="md-6 space-y-1">
         <h1 className="text-2xl font-semibold text-gray-900">Welcome to NextEstate</h1>
         <p className="text-sm text-gray-500">Create an account</p>
       </div>
 
-      <form className="space-y-8">
+      <form onSubmit={onSubmit} className="space-y-8">
         <Input id="login-name" name="name" label="Name" value={values.name} onChange={handleChange} error={errors.name} disabled={loading} />
         <Input id="login-email" name="email" label="Email" value={values.email} onChange={handleChange} error={errors.email} disabled={loading} />
         <Input id="login-password" name="password" label="Password" value={values.password} onChange={handleChange} error={errors.password} disabled={loading} />

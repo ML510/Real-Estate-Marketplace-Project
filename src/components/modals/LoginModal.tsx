@@ -6,6 +6,9 @@ import { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface LoginValues {
   email: string,
@@ -15,6 +18,7 @@ interface LoginValues {
 type LoginErrors = Partial<Record<keyof LoginValues, string>>
 
 function LoginModal() {
+  const router = useRouter();
 
   const { openRegister, isLoginOpen, closeLogin } = useAuthModal();
   const [values, setValues] = useState<LoginValues>({
@@ -60,6 +64,36 @@ function LoginModal() {
 
   }
 
+  const onSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    try {
+      setLoading(true);
+
+      const {error} = await authClient.signIn.email({
+        email:values.email,
+        password:values.password
+      });
+
+      if(error){
+        toast.error(error.message as string);
+        return;
+      }
+
+      toast.success("Login successful");
+      router.refresh();
+
+      setValues({email:"",password:""});
+      closeLogin();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.")
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   return (
     <Modal title="Login" onClose={closeLogin} isOpen={isLoginOpen}>
@@ -69,7 +103,7 @@ function LoginModal() {
         <p className="text-sm text-gray-500">Login to your account</p>
       </div>
 
-      <form className="space-y-8">
+      <form onSubmit={onSubmit} className="space-y-8">
         <Input id="login-email" name="email" label="Email" value={values.email} onChange={handleChange} error={errors.email} disabled={loading} />
         <Input id="login-password" name="password" label="Password" value={values.password} onChange={handleChange} error={errors.password} disabled={loading} />
 
