@@ -6,6 +6,7 @@ import LoginModal from "@/components/modals/LoginModal";
 import CreatePropertyModal from "@/components/modals/CreatePropertyModal";
 import FilterModal from "@/components/modals/FilterModal";
 import { Toaster } from "react-hot-toast";
+import React from "react";
 
 const poppins = Poppins({
 variable:"--font-poppins",
@@ -18,7 +19,9 @@ export const metadata: Metadata = {
   description: "Next Estate Egbontech Tutorial",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+// export default function RootLayout({ children }: LayoutProps<"/">) {
+
+export default function RootLayout({ children }: Readonly<{children:React.ReactNode}>) {
   return (
     <html
       lang="en"
