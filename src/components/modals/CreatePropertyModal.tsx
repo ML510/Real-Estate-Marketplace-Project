@@ -10,6 +10,9 @@ import { propertyTypes } from '@/constants/PropertyTypes';
 import Input from "../ui/Input";
 import Counter from "../properties/Counter";
 import ImageUpload from "../properties/ImageUpload";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const STEPS = {
     TYPE: 0,
@@ -22,6 +25,7 @@ const STEPS = {
 
 
 function CreatePropertyModal() {
+    const router = useRouter();
     const [step, setStep] = useState(STEPS.TYPE)
     const { isOpen, close } = useCreatePropertyModalStore();
     const [loading, setLoading] = useState(false);
@@ -65,6 +69,61 @@ function CreatePropertyModal() {
     }
 
     const createListing = async () => {
+        try{
+            setLoading(true);
+
+            const formData = new FormData();
+
+            formData.append("title",title)
+            formData.append("description",description)
+            formData.append("price",price)
+            formData.append("location",location)
+            formData.append("address",address)
+            formData.append("area",area)
+            formData.append("propertyType",propertyType)
+            formData.append("listingType",listingType)
+            formData.append("bedrooms",bedrooms.toString())
+            formData.append("bathrooms",bathrooms.toString())
+            formData.append("parkingSpaces",parkingSpaces.toString())
+            formData.append("price",price.toString())
+            if(image){
+                formData.append("image",image)
+            }
+
+            await axios.post("/api/properties",formData,{
+                headers:{
+                    "Content-Type": "multipart/form-data",
+                }
+            })
+
+            toast.success("Property created successfully")
+            router.replace("/properties")
+            handleClose();
+        } catch (error) {
+            if(axios.isAxiosError(error)){
+                toast.error(error.response?.data.error || "Something went wrong");
+                return;
+            }
+        }finally {
+            setLoading(false);
+        }
+    }
+
+    const handleClose = () => {
+        setPrice("");
+        setBathrooms(1);
+        setBedrooms(1)
+        setParkingSpaces(0)
+        setPropertyType("")
+        setLocation("");
+        setTitle("");
+        setDescription("");
+        setImage(null);
+        setPreview(null);
+        setStep(STEPS.TYPE);
+        setAddress("");
+        setArea("");
+        close();
 
     }
 
@@ -102,7 +161,7 @@ function CreatePropertyModal() {
                 {step === STEPS.FEATURES && (
                     <div className="space-y-6">
                         <Input name="title" label="Property Title" value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
-                        <Input name="description" label="Description" value={description} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)} />
+                        <Input as="textarea" name="description" label="Description" value={description} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)} />
 
                     </div>
                 )}
