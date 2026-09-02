@@ -1,6 +1,7 @@
 import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 import PropertyCard from "@/components/properties/PropertyCard";
+import CardSkeleton from "@/components/skeletons/CardSkeleton";
 import { getUserProperties } from "@/server-actions/getUserProperties";
 import { Suspense } from "react";
 
@@ -16,7 +17,7 @@ function PropertiesPage() {
           </h2>
 
         </div>
-        <Suspense fallback={<p>Loading properties...</p>}>
+        <Suspense fallback={<CardSkeleton />}>
           <PropertiesContainer />
         </Suspense>
         
