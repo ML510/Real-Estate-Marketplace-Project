@@ -2,6 +2,7 @@ import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 import PropertyCard from "@/components/properties/PropertyCard";
 import CardSkeleton from "@/components/skeletons/CardSkeleton";
+import EmptyState from "@/components/ui/EmptyState";
 import { getUserProperties } from "@/server-actions/getUserProperties";
 import { Suspense } from "react";
 
@@ -31,7 +32,7 @@ async function PropertiesContainer() {
   const properties = await getUserProperties();
 
   if(properties.length === 0){
-    return <p>No properties found</p>
+    return <EmptyState title="No Properties Found" subTitle="You currently have no properties availabl. Check back later after creating new listings."/>
   }
   return (
     <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-4">
