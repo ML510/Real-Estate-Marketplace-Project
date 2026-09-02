@@ -1,11 +1,12 @@
 import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 import PropertyCard from "@/components/properties/PropertyCard";
-import { dummyProperties } from "@/constants/dummyProperties";
+import { getUserProperties } from "@/server-actions/getUserProperties";
+import { Suspense } from "react";
 
 function PropertiesPage() {
   return (
-     <FrontendLayout>
+    <FrontendLayout>
       <NavBar variant="solid" />
 
       <div className="mx-auto max-w-7xl p-6 lg:px-12 w-full">
@@ -15,19 +16,31 @@ function PropertiesPage() {
           </h2>
 
         </div>
-
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-4">
-          {dummyProperties.map((property)=>(
-            <PropertyCard key={property.id} property={property}/>
-          ))}
-
-        </div>
+        <Suspense fallback={<p>Loading properties...</p>}>
+          <PropertiesContainer />
+        </Suspense>
+        
 
       </div>
-
-
     </FrontendLayout>
   )
+}
+
+async function PropertiesContainer() {
+  const properties = await getUserProperties();
+
+  if(properties.length === 0){
+    return <p>No properties found</p>
+  }
+  return (
+    <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 my-4">
+      {properties.map((property) => (
+        <PropertyCard key={property.id} property={property} />
+      ))}
+
+    </div>
+  );
+
 }
 
 export default PropertiesPage
