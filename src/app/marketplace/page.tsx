@@ -2,6 +2,8 @@ import FrontendLayout from "@/components/layouts/frontendLayout";
 import NavBar from "@/components/navbar/Navbar";
 import FilterButton from './../../components/marketplace/FilterButton';
 import MarketPlace from "@/components/marketplace/MarketPlace";
+import { Suspense } from "react";
+import CardSkeleton from "@/components/skeletons/CardSkeleton";
 
 type MarketPageProps = {
   searchParams:Promise<{
@@ -26,7 +28,11 @@ async function MarketPage({searchParams}:MarketPageProps) {
           </h2>
           <FilterButton/>
         </div>
-        <MarketPlace searchParams={params}/>
+
+        <Suspense fallback={<CardSkeleton/>}>
+          <MarketPlace searchParams={params}/>
+        </Suspense>
+        
       </div>
     </FrontendLayout>
   )
