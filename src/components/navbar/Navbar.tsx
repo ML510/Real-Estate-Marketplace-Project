@@ -50,7 +50,7 @@ function NavBar({ variant = "transparent" }: NavbarProps) {
                     {/* desktop links */}
                     <div className="hidden items-center gap-8 lg:flex">
                         {navLinks.map((item) => (
-                            <Link key={item} href={item === "Home" ? "/" : `${item.toLowerCase()}`} className={`text-sm font-medium transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}>
+                            <Link key={item} href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className={`text-sm font-medium transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}>
                                 {item}
                             </Link>
                         ))}
@@ -92,7 +92,7 @@ function NavBar({ variant = "transparent" }: NavbarProps) {
 
                         <div className="flex flex-col gap-5">
                             {navLinks.map((item) => (
-                                <Link key={item} href={item === "Home" ? "/" : `${item.toLowerCase()}`} className={`transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}>
+                                <Link key={item} href={item === "Home" ? "/" : `/${item.toLowerCase()}`} className={`transition hover:text-primary ${isTransparent ? "text-white/80" : "text-text/70"}`}>
                                     {item}
                                 </Link>
                             ))}
