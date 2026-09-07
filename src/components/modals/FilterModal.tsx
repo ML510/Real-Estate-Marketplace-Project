@@ -2,11 +2,12 @@
 
 import { useFilterModalStore } from "@/store/useFilterModalStore";
 import Modal from "./Modal";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { propertyTypes } from './../../constants/PropertyTypes';
 import PropertyTypeCard from './../properties/PropertyTypeCard';
 import Button from './../ui/Button';
 import Input from './../ui/Input';
+import { useRouter, useSearchParams } from "next/navigation";
 
 const STEPS = {
     TYPE: 0,
@@ -14,15 +15,16 @@ const STEPS = {
     PRICE: 2,
 }
 
-
-export default function FilterModal() {
+function FilterModalContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const { close, isOpen } = useFilterModalStore();
-    const [propertyType, setPropertyType] = useState("");
-    const [location, setLocation] = useState("");
-    const [address, setAddress] = useState("");
+    const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "");
+    const [location, setLocation] = useState(searchParams.get("location") || "");
+    const [address, setAddress] = useState(searchParams.get("address") || "");
     const [step, setStep] = useState(STEPS.TYPE);
-    const [minprice, setMinPrice] = useState("");
-    const [maxprice, setMaxPrice] = useState("");
+    const [minprice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+    const [maxprice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
 
     const stepTitle = () => {
         switch (step) {
@@ -38,7 +40,18 @@ export default function FilterModal() {
         }
     }
 
-    const applyFilter = () => { }
+    const applyFilter = () => {
+        const params = new URLSearchParams();
+        if (propertyType) params.set("propertyType", propertyType);
+        if (location) params.set("location", location);
+        if (address) params.set("address", address);
+        if (minprice) params.set("minprice", minprice);
+        if (maxprice) params.set("maxprice", maxprice);
+
+        router.replace(`/marketplace?${params.toString()}`);
+        setStep(STEPS.TYPE);
+        close();
+    }
 
     return (
         <div>
@@ -90,4 +103,12 @@ export default function FilterModal() {
             </Modal>
         </div>
     )
+}
+
+export default function FilterModal() {
+    return (
+        <Suspense>
+            <FilterModalContent />
+        </Suspense>
+    );
 }
