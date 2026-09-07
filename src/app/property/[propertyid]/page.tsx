@@ -1,6 +1,7 @@
 import FrontendLayout from '@/components/layouts/frontendLayout';
 import NavBar from '@/components/navbar/Navbar';
 import EmailForm from '@/components/properties/EmailForm';
+import PropertyPageSkeleton from '@/components/skeletons/PropertyPageSkeleton';
 import { getProperty } from '@/server-actions/getProperty';
 import Image from 'next/image';
 import { Suspense } from 'react';
@@ -17,7 +18,7 @@ async function PropertyPage({ params }: { params: Promise<{ propertyid: string }
         <FrontendLayout>
             <NavBar variant="solid" />
 
-            <Suspense fallback={<p>Loading...</p>}>
+            <Suspense fallback={<PropertyPageSkeleton/>}>
                 <PropertyContent propertyId={propertyId} />
             </Suspense>
         </FrontendLayout>
