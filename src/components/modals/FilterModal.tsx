@@ -19,12 +19,12 @@ function FilterModalContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { close, isOpen } = useFilterModalStore();
-    const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "");
-    const [location, setLocation] = useState(searchParams.get("location") || "");
-    const [address, setAddress] = useState(searchParams.get("address") || "");
+    const [propertyType, setPropertyType] = useState(() => searchParams.get("propertyType") || "");
+    const [location, setLocation] = useState(() => searchParams.get("location") || "");
+    const [address, setAddress] = useState(() => searchParams.get("address") || "");
     const [step, setStep] = useState(STEPS.TYPE);
-    const [minprice, setMinPrice] = useState(searchParams.get("minPrice") || "");
-    const [maxprice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
+    const [minPrice, setMinPrice] = useState(() => searchParams.get("minPrice") || "");
+    const [maxPrice, setMaxPrice] = useState(() => searchParams.get("maxPrice") || "");
 
     const stepTitle = () => {
         switch (step) {
@@ -45,8 +45,8 @@ function FilterModalContent() {
         if (propertyType) params.set("propertyType", propertyType);
         if (location) params.set("location", location);
         if (address) params.set("address", address);
-        if (minprice) params.set("minprice", minprice);
-        if (maxprice) params.set("maxprice", maxprice);
+        if (minPrice) params.set("minPrice", minPrice);
+        if (maxPrice) params.set("maxPrice", maxPrice);
 
         router.replace(`/marketplace?${params.toString()}`);
         setStep(STEPS.TYPE);
@@ -80,10 +80,10 @@ function FilterModalContent() {
                     {step === STEPS.PRICE && (
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <Input label="Min Price" name="min-price" type="number" value={minprice} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(e.target.value)} />
+                                <Input label="Min Price" name="min-price" type="number" value={minPrice} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMinPrice(e.target.value)} />
                             </div>
                             <div>
-                                <Input label="Max Price" name="max-price" type="number" value={maxprice} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(e.target.value)} />
+                                <Input label="Max Price" name="max-price" type="number" value={maxPrice} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMaxPrice(e.target.value)} />
                             </div>
                         </div>
                     )}
