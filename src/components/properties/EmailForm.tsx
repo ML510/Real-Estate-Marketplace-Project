@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { LuSend } from "react-icons/lu";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 interface InputValues {
     email: string,
@@ -13,8 +15,16 @@ interface InputValues {
     message: string
 }
 
+interface EmailFormProps {
+    name: string,
+    image: string,
+    email: string,
+    propertyTitle: string,
+    propertyPrice: number
+}
 
-function EmailForm() {
+
+function EmailForm({ name, image, email, propertyTitle, propertyPrice }: EmailFormProps) {
 
     const [values, setValues] = useState<InputValues>({
         email: "",
@@ -22,6 +32,8 @@ function EmailForm() {
         phone: "",
         message: ""
     });
+
+    const [loading,setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
@@ -31,14 +43,43 @@ function EmailForm() {
             [name]: value
         }))
     };
+
+    const sendEmail = async (e: React.SubmitEvent) => {
+        e.preventDefault();
+        if (!values.email || !values.name || !values.phone || !values.message) {
+            toast.error("All Fields are Required!")
+            return;
+        }
+        try {
+            setLoading(true);
+            await axios.post("/api/send-email",{
+                ownerEmail:email,
+                ownerName:name,
+                propertyTitle,
+                propertyPrice,
+                senderEmail:values.email,
+                senderName:values.name,
+                message:values.message,
+                senderPhone:values.phone
+            });
+            toast.success("Message Sent Successfully")
+            setValues({message:"",phone:"",email:"",name:""})
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to send email")
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <div>
-            <div className=" sticky top-28 rounded-4xl border border-black/5 bg-card p-8 shadow-sm">
+            <form onSubmit={sendEmail} className=" sticky top-28 rounded-4xl border border-black/5 bg-card p-8 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <Image src="/images/avatar.png" alt="User" width={50} height={50} className="object-cover rounded-full" />
+                    <Image src={image} alt="User" width={50} height={50} className="object-cover rounded-full" />
                     <div>
                         <h3 className="text-xl font-bold text-text">
-                            Sarah Johnson
+                            {name}
                         </h3>
                         <p className="text-text/60">
                             Property Agent
@@ -52,11 +93,11 @@ function EmailForm() {
                     <Input onChange={handleChange} id="contact-phone" label="Your Phone" name="phone" value={values.phone} />
                     <Input onChange={handleChange} id="contact-message" label="Your Message" name="message" value={values.message} as="textarea" />
                 </div>
-                <Button fullWidth className="mt-3" icon={<LuSend />}>
+                <Button loading={loading} fullWidth className="mt-3" icon={<LuSend />}>
                     Send Email
                 </Button>
 
-            </div>
+            </form>
         </div>
     );
 }
