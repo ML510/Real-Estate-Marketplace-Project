@@ -1,6 +1,5 @@
 import RealEstateInquiryEmail from "@/components/emails/InquiryEmail";
 import { resend } from "@/lib/resend";
-import { success } from "better-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

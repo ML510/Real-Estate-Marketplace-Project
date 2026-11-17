@@ -78,7 +78,7 @@ async function PropertyContent({ propertyId }: { propertyId: string }) {
                 </div>
 
                 <div className=" w-full h-60 md:h-100 lg:h-120 relative my-6">
-                    <Image src={property?.image || ""} alt="property" fill className="rounded-2xl object-cover" />
+                    <Image src={property?.image || ""} alt="property" fill priority sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1280px" className="rounded-2xl object-cover" />
                 </div>
 
                 <div className="mt-16 grid gap-10 lg:grid-cols-3">

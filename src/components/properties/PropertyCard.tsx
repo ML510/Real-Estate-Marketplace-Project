@@ -11,6 +11,7 @@ function PropertyCard({ property }: PropertyCardProps) {
 
             <div className="w-full h-full relative">
                 <Image src={property.image} alt={property.title} fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className=" inset-0 object-cover transition duration-700 group-hover:scale-110" />
 
                 {/* dark overlay */}
